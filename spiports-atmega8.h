@@ -2,7 +2,7 @@
  * SPI Port Definitions for device - Atmega8
  * =========================================
  *
- * Created by Saptarishi Hazra and Shoumik Ghosal
+ * Created by Saptarshi Hazra and Shoumik Ghosal
  *
  * Pin mappings are as follows:
  * PORTB - Port for SPI

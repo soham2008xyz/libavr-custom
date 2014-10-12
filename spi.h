@@ -5,7 +5,7 @@
  * =================================
  * * Atmega8
  *
- * Created by Saptarishi Hazra and Shoumik Ghosal
+ * Created by Saptarshi Hazra and Shoumik Ghosal
  */ 
 
 #ifndef _SPIPORTS_H_
