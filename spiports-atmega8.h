@@ -12,8 +12,7 @@
  * PB4 - Master In, Slave Out (MISO)
  * PB5 - Serial Clock (SCK)
  *
- */ 
-
+ */
 
 #ifndef _SPIPORTS_H_
 #define _SPIPORTS_H_
@@ -35,4 +34,4 @@
 #define MISO PB4
 #define SCK PB5
 
-#endif /* _SPIPORTS_H_ */
+#endif // _SPIPORTS_H_
