@@ -80,6 +80,13 @@ void _init_common() {
     #endif // SPI_CPHA
     SPCR |= (SPI_CPHA<<CPHA);
 
+
+
+    /* Enable the SPI peripheral by pulling SPI enable to high
+     * @param SPCR - SPI Control Register
+     * @param SPE - SPI Enable
+     */
+    SPCR |= (1<<SPE);
 }
 
 /* Initializations for master mode SPI */
@@ -98,12 +105,6 @@ void _init_master() {
      */
     SPIPORT |= (1<<SS);
 
-    /* Enable the SPI peripheral by pulling SPI enable to high
-     * @param SPCR - SPI Control Register
-     * @param SPE - SPI Enable
-     */
-    SPCR |= (1<<SPE);
-
     /* Enable the master select by pulling it to high
      * @param SPCR - SPI Control Register
      * @param MSTR - SPI Master Select
@@ -113,7 +114,19 @@ void _init_master() {
 
 /* Initializations for slave mode SPI */
 void _init_slave() {
+    _init_common();
 
+    /* The device shall be configured as a SPI slave
+     * MOSI, SCK, SS shall be input pins
+     * MISO will be an output pin
+     */
+    SPIDDR |= ((1<<MISO) | (0<<MOSI) | (0<<SS) | (0<<SCK));
+
+    /* Enable the slave select by pulling it to low
+     * @param SPCR - SPI Control Register
+     * @param MSTR - SPI Master Select
+     */
+    SPCR |= (0<<MSTR);
 }
 
 #endif // _SPI_H_

@@ -1,23 +1,23 @@
 /*
  * SPI Port Definitions for device - Atmega8
  * =========================================
+ * Created by Saptarshi Hazra, Shashwata Gupta and Shoumik Ghosal
  *
- * Created by Saptarshi Hazra and Shoumik Ghosal
- *
- * Pin mappings are as follows:
- * PORTB - Port for SPI
- * DDRB - Data Direction Register for SPI
- * PB2 - Slave Select (SS)
- * PB3 - Master Out, Slave In (MOSI)
- * PB4 - Master In, Slave Out (MISO)
- * PB5 - Serial Clock (SCK)
+ * Pin mappings
+ * ============
+ * PORTB    - Port for SPI
+ * DDRB     - Data Direction Register for SPI
+ * PB2      - Slave Select (SS)
+ * PB3      - Master Out, Slave In (MOSI)
+ * PB4      - Master In, Slave Out (MISO)
+ * PB5      - Serial Clock (SCK)
  *
  */
 
 #ifndef _SPIPORTS_H_
 #define _SPIPORTS_H_
 
-/* Do initial definitions of ports here
+/* Initial configuration of ports go here
  * @param SPIPORT - The variable used to mask the SPI port, per device
  * @param SPIDDR - The variable used the mask the SPI Data Direction Register, per device
  * @param SS - The variable used to mask the per-device slave select
