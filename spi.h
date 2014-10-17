@@ -61,8 +61,25 @@
 /* No port definition has been included before
  * Assuming default port definitions for generic device
  */
+#define _SPIPORTS_H_
 
-#include "spiports-atmega8.h"
+/* Initial configuration of ports go here
+ * @param SPIPORT - The variable used to mask the SPI port, per device
+ * @param SPIDDR - The variable used the mask the SPI Data Direction Register, per device
+ * @param SS - The variable used to mask the per-device slave select
+ * @param MOSI - The variable used to mask the per-device master-out, slave in
+ * @param MISO - The variable used to mask the per-device master-in, slave out
+ * @param SCK - The variable used to mask the per-device serial clock
+ */
+
+#define SPIPORT PORTB
+#define SPIDDR DDRB
+
+#define SS PB2
+#define MOSI PB3
+#define MISO PB4
+#define SCK PB5
+
 #endif // _SPIPORTS_H_
 
 #ifndef _SPI_H_
@@ -157,7 +174,6 @@ void _spi_write(unsigned char data) {
      * Since SPI is always full duplex
      */
     unsigned char dummy;
-
     dummy = _spi_read_write(data);
 }
 
@@ -168,7 +184,6 @@ unsigned char _spi_read() {
      * Since SPI is always full duplex
      */
     unsigned char dummy = 0x00;
-
     return _spi_read_write(dummy);
 }
 
@@ -187,31 +202,61 @@ void _spi_read(unsigned char* address) {
  * @param SPDR - SPI data register
  */
 unsigned char _spi_read_write(unsigned char data) {
+	/* The data to be sent is initially written to the SPI data register */
+	SPDR = data;
 
+	/* Now we wait for the transmission to complete
+	 * @param SPSR - SPI Status Register
+     * @param SPIF - SPI Interrupt Flag
+     */
+	while(!(SPSR & (1<<SPIF)));
+
+	/* The SPI data register now contains data which has been read */
+	return SPDR;
 }
 
+/* Function to write a string (character array) to SPI at once */
 void _spi_write_string(unsigned char *string) {
+    uint8_t pos = 0;
 
+    /* A string is a sequence of characters terminated by a null '\0' */
+    while(string[pos] != 0x00) {
+        _spi_write(string[pos++]);
+    }
+    /* Ensure proper string termination with null character */
+    _spi_write(0x00);
 }
 
+#ifndef SPI_MAX_STRING_LENGTH
+#define SPI_MAX_STRING_LENGTH 255
+#endif // SPI_MAX_STRING_LENGTH
+char _spi_buffer[SPI_MAX_STRING_LENGTH];
+
+/* Function to read a string (character array) from SPI at once
+ * The maximum length of a transmissible string is 255 by default
+ */
 unsigned char* _spi_read_string() {
+    unsigned char ch;
+    uint8_t pos = 0;
 
+    /* A null character '\0' signifies the end of a string */
+    while((ch=_spi_read()) != 0x00) {
+        _spi_buffer[pos++] = ch;
+    }
+    /* Ensure proper string termination */
+    _spi_buffer[pos] = 0x00;
+
+    return _spi_buffer;
 }
 
+/* Function to read a numeric string and return its integer representation through SPI */
 int _spi_read_int() {
-
+    return atoi(_spi_read_string());
 }
 
-void _spi_read_int(int *num) {
-
-}
-
+/* Function to write the string representation of an integer through SPI */
 void _spi_write_int(int num) {
-
-}
-
-int _spi_read_write_int(int num) {
-
+    _spi_write_string(itoa(num, _spi_buffer, 10));
 }
 
 #endif // _SPI_H_
