@@ -85,6 +85,9 @@
 #ifndef _SPI_H_
 #define _SPI_H_
 
+/* Global Definitions */
+#define NULL 0x00
+
 /* Common initializations for both master and slave go here */
 void _init_common() {
 
@@ -188,13 +191,16 @@ unsigned char _spi_read() {
 }
 
 /* Function to read a single character from the data register to a memory location
+ * WORK IN PROGRESS !
  * @param address - Pointer to the memory location where the 1 byte of character data is stored from the SPI data register
  * IMPORTANT: Please allocate 1 byte of memory at the address of the pointer, otherwise existing data could be overwritten!
  * Please make sure you call address = (char*)(malloc(sizeof(char))); before _spi_read(address);
  */
+/*
 void _spi_read(unsigned char* address) {
     (*address) = _spi_read();
 }
+*/
 
 /* Function to read a single character from the data register, and to simultaneously write another single character to it
  * Here data is transferred full duplex
@@ -220,11 +226,11 @@ void _spi_write_string(unsigned char *string) {
     uint8_t pos = 0;
 
     /* A string is a sequence of characters terminated by a null '\0' */
-    while(string[pos] != 0x00) {
+    while(string[pos] != NULL) {
         _spi_write(string[pos++]);
     }
     /* Ensure proper string termination with null character */
-    _spi_write(0x00);
+    _spi_write(NULL);
 }
 
 #ifndef SPI_MAX_STRING_LENGTH
@@ -240,23 +246,36 @@ unsigned char* _spi_read_string() {
     uint8_t pos = 0;
 
     /* A null character '\0' signifies the end of a string */
-    while((ch=_spi_read()) != 0x00) {
+    while((ch=_spi_read()) != NULL) {
         _spi_buffer[pos++] = ch;
     }
     /* Ensure proper string termination */
-    _spi_buffer[pos] = 0x00;
+    _spi_buffer[pos] = NULL;
 
     return _spi_buffer;
 }
 
 /* Function to read a numeric string and return its integer representation through SPI */
-int _spi_read_int() {
+uint8_t _spi_read_int() {
     return atoi(_spi_read_string());
 }
 
 /* Function to write the string representation of an integer through SPI */
-void _spi_write_int(int num) {
+uint8_t _spi_write_int(int num) {
     _spi_write_string(itoa(num, _spi_buffer, 10));
+}
+
+uint8_tint _spi_read_write_int(int data) {
+	uint8_t d, temp, num = 0;
+	
+	while(data > 0) {
+		d = data % 10;
+		data /= 10;
+		temp = _spi_read_write(d + 48);
+		num = (num * 10) + (temp - 48);
+	}
+	
+	return num;
 }
 
 #endif // _SPI_H_
