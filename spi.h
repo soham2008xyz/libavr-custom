@@ -54,7 +54,11 @@
  * C. List of Compatible Devices
  * =============================
  * 1. Atmega8
- *
+ * 2. Atmega128
+ * 
+ * D. List of Functions
+ * ====================
+ * 
  */
 
 #ifndef _SPIPORTS_H_
@@ -265,6 +269,9 @@ uint8_t _spi_write_int(int num) {
     _spi_write_string(itoa(num, _spi_buffer, 10));
 }
 
+/* Function to write an integer to SPI and read back an integer at the same time
+ * @param data 8-bit integer data to be written to SPI
+ */
 uint8_tint _spi_read_write_int(int data) {
 	uint8_t d, temp, num = 0;
 	

@@ -97,6 +97,9 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="interrupt-atmega8.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="spiports-atmega128.h">
       <SubType>compile</SubType>
     </Compile>
