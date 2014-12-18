@@ -100,6 +100,86 @@ void _setup_INT1_lowlevel()
 	
 }
 
+void _setup_INT2_lowlevel()
+{
+	/*interrupt fired when the PD2 pin goes low*/
+	DDRD|=(0<<_INT2);
+	PORTD|=(1<<_INT2);
+	Control|=(0<<ISC20)|(0<<ISC21);
+	INTMask|=(1<<INT2);
+	
+}
+
+void _setup_INT2_logicalchange()
+{
+	/*interrupt fired when the PD2 pin goes low*/
+	DDRD|=(0<<_INT2);
+	PORTD|=(1<<_INT2);
+	Control|=(1<<ISC20)|(0<<ISC21);
+	INTMask|=(1<<INT2);
+	
+}
+
+void _setup_INT2_fallingedge()
+{
+	/*interrupt fired when the PD2 pin goes low*/
+	DDRD|=(0<<_INT2);
+	PORTD|=(1<<_INT2);
+	Control|=(0<<ISC20)|(1<<ISC21);
+	INTMask|=(1<<INT2);
+	
+}
+
+void _setup_INT2_risingedge()
+{
+	/*interrupt fired when the PD2 pin goes low*/
+	DDRD|=(0<<_INT2);
+	PORTD|=(1<<_INT2);
+	Control|=(1<<ISC20)|(1<<ISC21);
+	INTMask|=(1<<INT2);
+	
+}
+
+void _setup_INT3_lowlevel()
+{
+	/*interrupt fired when the PD2 pin goes low*/
+	DDRD|=(0<<_INT3);
+	PORTD|=(1<<_INT3);
+	Control|=(0<<ISC30)|(0<<ISC31);
+	INTMask|=(1<<INT3);
+	
+}
+
+void _setup_INT3_logicalchange()
+{
+	/*interrupt fired when the PD2 pin goes low*/
+	DDRD|=(0<<_INT3);
+	PORTD|=(1<<_INT3);
+	Control|=(1<<ISC30)|(0<<ISC31);
+	INTMask|=(1<<INT3);
+	
+}
+
+void _setup_INT3_fallingedge()
+{
+	/*interrupt fired when the PD2 pin goes low*/
+	DDRD|=(0<<_INT3);
+	PORTD|=(1<<_INT3);
+	Control|=(0<<ISC30)|(1<<ISC31);
+	INTMask|=(1<<INT3);
+	
+}
+
+void _setup_INT3_risingedge()
+{
+	/*interrupt fired when the PD2 pin goes low*/
+	DDRD|=(0<<_INT3);
+	PORTD|=(1<<_INT3);
+	Control|=(1<<ISC30)|(1<<ISC31);
+	INTMask|=(1<<INT3);
+	
+}
+
 
 
 #endif /* INTERRUPT-ATMEGA8_H_ */
